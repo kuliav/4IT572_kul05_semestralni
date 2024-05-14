@@ -83,14 +83,23 @@
 - name: Limit the instances count
   hosts: localhost
   tasks:
-    - name: Limit to one
-      amazon.aws.ec2_instance:
+    - name: Describe EC2 instances with specific tag
+      amazon.aws.ec2_instance_info:
         region: us-east-1
         filters:
-          "tag:name": "Eshop"
-        exact_count: 1
-        wait: yes
+          "tag:Name": "Eshop"
+      register: instances
+
+    - name: Sort instances by launch time
+      set_fact:
+        sorted_instances: "{{ instances.instances | sort(attribute='launch_time') }}"
+
+    - name: Terminate previous instances
+      amazon.aws.ec2:
+        region: us-east-1
+        instance_ids: "{{ item.instance_id }}"
+        state: absent
         aws_access_key: "{{ access_key }}"
         aws_secret_key: "{{ secret_key }}"
         security_token: "{{ session_token }}"
-
+      with_items: "{{ sorted_instances[:-1] }}"
