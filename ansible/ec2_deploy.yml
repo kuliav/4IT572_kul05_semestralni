@@ -125,7 +125,7 @@
 
       
 
-      - name: Ansible set up
+      - name: Ansible setup run
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
         working-directory: ./ansible
