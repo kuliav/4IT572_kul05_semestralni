@@ -83,7 +83,7 @@
 - name: Limit the instances count
   hosts: localhost
   tasks:
-    - name: Limit to 1
+    - name: Limit to one
       amazon.aws.ec2_instance:
       region: us-east-1
       count_tag:
