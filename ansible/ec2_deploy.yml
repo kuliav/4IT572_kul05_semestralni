@@ -85,11 +85,12 @@
   tasks:
     - name: Limit to one
       amazon.aws.ec2_instance:
-      region: us-east-1
-      filters:
-        "tag:name": "Eshop"
-      exact_count: 1
-      wait: yes
-      aws_access_key: "{{ access_key }}"
-      aws_secret_key: "{{ secret_key }}"
-      security_token: "{{ session_token }}"
+        region: us-east-1
+        filters:
+          "tag:name": "Eshop"
+        exact_count: 1
+        wait: yes
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        security_token: "{{ session_token }}"
+
