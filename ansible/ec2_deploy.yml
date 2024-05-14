@@ -86,8 +86,8 @@
     - name: Limit to one
       amazon.aws.ec2_instance:
       region: us-east-1
-      count_tag:
-      Name: "Eshop"
+      filters:
+        "tag:name": "Eshop"
       exact_count: 1
       wait: yes
       aws_access_key: "{{ access_key }}"
