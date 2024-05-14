@@ -80,26 +80,19 @@
         port:
           80
 
-- name: Limit the instances count
+- name: Terminate previous instance
   hosts: localhost
+  connection: local
+
   tasks:
-    - name: Describe EC2 instances with specific tag
-      amazon.aws.ec2_instance_info:
+    - name: Shutdown previous instance
+      amazon.aws.ec2_instance:
+        instance_ids: "{{ ec2_instance_result.instances[0].instance_id }}"
         region: us-east-1
-        filters:
-          "tag:Name": "Eshop"
-      register: instances
-
-    - name: Sort instances by launch time
-      set_fact:
-        sorted_instances: "{{ instances.instances | sort(attribute='launch_time') }}"
-
-    - name: Terminate previous instances
-      amazon.aws.ec2:
-        region: us-east-1
-        instance_ids: "{{ item.instance_id }}"
-        state: absent
+        state: "terminated"
+        wait: true
         aws_access_key: "{{ access_key }}"
         aws_secret_key: "{{ secret_key }}"
         security_token: "{{ session_token }}"
-      with_items: "{{ sorted_instances[:-1] }}"
+      when: ec2_instance_result.instances | length > 1
+
