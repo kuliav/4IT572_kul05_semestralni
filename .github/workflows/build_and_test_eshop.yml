@@ -120,8 +120,6 @@ jobs:
       - name: Install Ansible
         run: pip3 install ansible boto boto3
 
-      
-
       - name: Ansible set up
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
